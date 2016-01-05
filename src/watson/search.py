@@ -431,7 +431,7 @@ class SearchEngine(object):
     def _get_entries_for_obj(self, obj):
         """Returns a queryset of entries associate with the given obj."""
         model = obj.__class__
-        content_type = ContentType.objects.get_for_model(model)
+        content_type = ContentType.objects.get_for_model(model, for_concrete_model=False)
         object_id = force_text(obj.pk)
         # Get the basic list of search entries.
         search_entries = SearchEntry.objects.filter(
@@ -456,7 +456,7 @@ class SearchEngine(object):
         """Either updates the given object index, or yields an unsaved search entry."""
         model = obj.__class__
         adapter = self.get_adapter(model)
-        content_type = ContentType.objects.get_for_model(model)
+        content_type = ContentType.objects.get_for_model(model, for_concrete_model=False)
         object_id = force_text(obj.pk)
         # Create the search entry data.
         search_entry_data = {
@@ -527,10 +527,10 @@ class SearchEngine(object):
                         # HACK: There is a bug in Django (https://code.djangoproject.com/ticket/15145) that messes up __in queries when the iterable is empty.
                         # This bit of nonsense ensures that this aspect of the query will be impossible to fulfill.
                         filter &= Q(
-                            content_type = ContentType.objects.get_for_model(model).id + 1,
+                            content_type = ContentType.objects.get_for_model(model, for_concrete_model=False).id + 1,
                         )
             # Add the model to the filter.
-            content_type = ContentType.objects.get_for_model(model)
+            content_type = ContentType.objects.get_for_model(model, for_concrete_model=False)
             filter &= Q(
                 content_type = content_type,
             )

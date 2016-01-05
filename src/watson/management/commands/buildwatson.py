@@ -122,7 +122,7 @@ class Command(BaseCommand):
                     refreshed_model_count += rebuild_index_for_model(model, engine_slug, verbosity)
 
                 # Clean out any search entries that exist for stale content types. Only do it during full rebuild
-                valid_content_types = [ContentType.objects.get_for_model(model) for model in registered_models]
+                valid_content_types = [ContentType.objects.get_for_model(model, for_concrete_model=False) for model in registered_models]
                 stale_entries = SearchEntry.objects.filter(
                     engine_slug = engine_slug,
                 ).exclude(

@@ -124,7 +124,7 @@ class RegexSearchMixin(six.with_metaclass(abc.ABCMeta)):
         }
         word_args = [
             engine_slug,
-            ContentType.objects.get_for_model(model).id,
+            ContentType.objects.get_for_model(model, for_concrete_model=False).id,
         ]
         # Add in join.
         if has_int_pk(model):
@@ -261,7 +261,7 @@ class PostgresSearchBackend(SearchBackend):
     def do_filter(self, engine_slug, queryset, search_text):
         """Performs the full text filter."""
         model = queryset.model
-        content_type = ContentType.objects.get_for_model(model)
+        content_type = ContentType.objects.get_for_model(model, for_concrete_model=False)
         pk = model._meta.pk
         if has_int_pk(model):
             ref_name = "object_id_int"
@@ -404,7 +404,7 @@ class MySQLSearchBackend(SearchBackend):
     def do_filter(self, engine_slug, queryset, search_text):
         """Performs the full text filter."""
         model = queryset.model
-        content_type = ContentType.objects.get_for_model(model)
+        content_type = ContentType.objects.get_for_model(model, for_concrete_model=False)
         pk = model._meta.pk
         if has_int_pk(model):
             ref_name = "object_id_int"
