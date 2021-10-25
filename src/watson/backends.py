@@ -443,8 +443,7 @@ class MySQLSearchBackend(SearchBackend):
 
 def get_postgresql_version(connection):
     """Returns the version number of the PostgreSQL connection."""
-    from django.db.backends.postgresql_psycopg2.version import get_version
-    return get_version(connection)
+    return connection.server_version
 
 
 class AdaptiveSearchBackend(SearchBackend):
