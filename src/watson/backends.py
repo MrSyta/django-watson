@@ -443,7 +443,7 @@ class MySQLSearchBackend(SearchBackend):
 
 def get_postgresql_version(connection):
     """Returns the version number of the PostgreSQL connection."""
-    return connection.server_version
+    return connection.cursor().connection.server_version
 
 
 class AdaptiveSearchBackend(SearchBackend):
