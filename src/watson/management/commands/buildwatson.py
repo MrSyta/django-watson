@@ -58,9 +58,10 @@ class Command(BaseCommand):
     args = "[[--engine=search_engine] <app.model|model> <app.model|model> ... ]"
     help = "Rebuilds the database indices needed by django-watson. You can (re-)build index for selected models by specifying them"
 
-    option_list = BaseCommand.option_list + (
-        make_option("--engine",
-            help="Search engine models are registered with"),
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--engine',
+            help="Search engine models are registered with"
         )
 
     @transaction.atomic()
